@@ -43,6 +43,9 @@ while True:
         file.write_text(values["-DATA-"])
         window["-DOCNAME-"].update(file_path.split("/")[-1])
 
+    if event == "Exit":
+        break
+
     if event == "Word Count":
         full_text = values["-DATA-"]
         clean_text = full_text.replace("\n", " ").split(" ")
