@@ -1,5 +1,5 @@
-from pathlib import Path
 import PySimpleGUI as sg
+from pathlib import Path
 
 sg.theme("GrayGrayGray")
 
@@ -10,7 +10,7 @@ smileys = [
 ]
 
 layout_menu = [
-    ["File", ["Open", "save", "---", "Exit"]],
+    ["File", ["Open", "Save", "---", "Exit"]],
     ["Tools", ["Word Count"]],
     ["Add", smileys],
 ]
@@ -36,6 +36,12 @@ while True:
             file = Path(file_path)
             window["-DATA-"].update(file.read_text())
             window["-DOCNAME-"].update(file_path.split("/")[-1])
+
+    if event == "Save":
+        file_path = sg.popup_get_file("save", no_window=True, save_as=True) + ".txt"
+        file = Path(file_path)
+        file.write_text(values["-DATA-"])
+        window["-DOCNAME-"].update(file_path.split("/")[-1])
 
     if event == "Word Count":
         full_text = values["-DATA-"]
