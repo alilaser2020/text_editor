@@ -1,3 +1,4 @@
+from pathlib import Path
 import PySimpleGUI as sg
 
 sg.theme("GrayGrayGray")
@@ -28,6 +29,13 @@ while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED:
         break
+
+    if event == "Open":
+        file_path = sg.popup_get_file("open", no_window=True)
+        if file_path:
+            file = Path(file_path)
+            window["-DATA-"].update(file.read_text())
+            window["-DOCNAME-"].update(file_path.split("/")[-1])
 
     if event == "Word Count":
         full_text = values["-DATA-"]
