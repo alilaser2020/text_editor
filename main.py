@@ -1,35 +1,48 @@
 import PySimpleGUI as sg
 from pathlib import Path
 
-sg.theme("GrayGrayGray")
 
-smileys = [
-    "Happy", [":)", ":D", "3>"],
-    "Sad", [":(", ":|", "T_T"],
-    "Other", [":3"],
-]
+def create_theme(theme):
+    """
+    A method for define and creat a theme for program
+    :param theme:
+    :return:
+    """
+    sg.theme(theme)
 
-layout_menu = [
-    ["File", ["Open", "Save", "---", "Exit"]],
-    ["Tools", ["Word Count"]],
-    ["Add", smileys],
-]
+    smileys = [
+        "Happy", [":)", ":D", "3>"],
+        "Sad", [":(", ":|", "T_T"],
+        "Other", [":3"],
+    ]
 
-layout = [
-    [sg.Menu(layout_menu)],
-    [sg.Text("Untitled", key="-DOCNAME-")],
-    [sg.Multiline(key="-DATA-", no_scrollbar=True, size=(60, 30))],
-]
+    layout_menu = [
+        ["File", ["Open", "Save", "---", "Exit"]],
+        ["Tools", ["Word Count"]],
+        ["Add", smileys],
+    ]
 
-smileys_menu = smileys[1] + smileys[3] + smileys[5]
+    layout = [
+        [sg.Menu(layout_menu)],
+        [sg.Text("Untitled", key="-DOCNAME-", right_click_menu=theme_menu)],
+        [sg.Multiline(key="-DATA-", no_scrollbar=True, size=(60, 30), right_click_menu=theme_menu)],
+    ]
 
-window = sg.Window("Text Editor", layout)
+    smileys_menu = smileys[1] + smileys[3] + smileys[5]
+    return sg.Window("Text Editor", layout), smileys_menu
+
+
+theme_menu = ["Theme", ["Black", "dark", "BlueMono", "random"]]
+window, smileys_menu = create_theme("GrayGrayGray")
 
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED:
         break
 
+    if event in theme_menu[1]:
+        window.close()
+        window, smileys_menu = create_theme(event)
     if event == "Open":
         file_path = sg.popup_get_file("open", no_window=True)
         if file_path:
